@@ -1,0 +1,36 @@
+services:
+  battleships:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: Battleships
+    env_file: .env
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app/
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
+    ports:
+      - "80:3000"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:17
+    container_name: Postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    volumes:
+      - battleships-postgres:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT}:5432
+
+volumes:
+  battleships-postgres:
