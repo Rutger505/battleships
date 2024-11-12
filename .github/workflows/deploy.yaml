@@ -76,34 +76,40 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install envsubst
+        run: sudo apt-get update && sudo apt-get install -y gettext-base
+
       - name: Generate deployment config
         id: config
         run: |
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             INGRESS_HOST=${{ vars.BASE_DOMAIN }}
-            CLUSTER_ISSUER_NAME=letsencrypt-production
-            POSTGRES_NAMESPACE=postgres-production
+            LETSENCRYPT_ENV="production"
+            POSTGRES_ENV="production"
           else
             INGRESS_HOST=${{ github.sha }}.${{ vars.BASE_DOMAIN }}
-            CLUSTER_ISSUER_NAME=letsencrypt-staging
-            POSTGRES_NAMESPACE=postgres-test
+            LETSENCRYPT_ENV="staging"
+            POSTGRES_ENV="test"
           fi
           
           echo "Setting ingress host to $INGRESS_HOST"
           echo "ingress_host=$INGRESS_HOST" >> $GITHUB_OUTPUT
           
-          echo "Setting cluster issuer name to $CLUSTER_ISSUER_NAME"
-          echo "cluster_issuer_name=$CLUSTER_ISSUER_NAME" >> $GITHUB_OUTPUT
+          echo "Setting letsencrypt_env to $LETSENCRYPT_ENV"
+          echo "letsencrypt_env=$LETSENCRYPT_ENV" >> $GITHUB_OUTPUT
           
-          echo "Setting postgres_namespace to $POSTGRES_NAMESPACE"
-          echo "postgres_namespace=$POSTGRES_NAMESPACE" >> $GITHUB_OUTPUT
+          echo "Setting postgres_env to $POSTGRES_ENV"
+          echo "postgres_env=$POSTGRES_ENV" >> $GITHUB_OUTPUT
           
           NAMESPACE=$APP_NAME-${{ matrix.environment }}
           echo "Setting namespace to $NAMESPACE"
           echo "namespace=$NAMESPACE" >> $GITHUB_OUTPUT
 
-      - name: Install envsubst
-        run: sudo apt-get update && sudo apt-get install -y gettext-base
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
+
 
       - name: Set up kubectl
         uses: azure/setup-kubectl@v4
@@ -116,31 +122,23 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBECONFIG }}
 
-      - name: Insert environment variables into Kubernetes files
+      - name: Process values file with envsubst
         env:
-          NAMESPACE: ${{ steps.config.outputs.namespace }}
-          APP_NAME: ${{ env.APP_NAME }}
-          DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
-          TAG: ${{ needs.build-docker-image.outputs.tag }}
-          INGRESS_HOST: ${{ steps.config.outputs.ingress_host }}
-          CLUSTER_ISSUER_NAME: ${{ steps.config.outputs.cluster_issuer_name }}
+          DOCKER_TAG: ${{ needs.build-docker-image.outputs.tag }}
+          LETSENCRYPT_ENV: ${{ steps.config.outputs.letsencrypt_env }}
+          POSTGRES_ENV: ${{ steps.config.outputs.postgres_env }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
           POSTGRES_USERNAME: ${{ secrets.POSTGRES_USERNAME }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_NAMESPACE: ${{ steps.config.outputs.postgres_namespace }}
-          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
-          AUTH_URL: https://${{ steps.config.outputs.ingress_host }}
         run: |
-          FILES=$(ls k8s/*.yaml | tr '\n' ' ')
-          
-          for FILE in $FILES; do
-            echo "Processing $FILE"
-            envsubst < $FILE > /tmp/envsubst || exit 1
-            mv /tmp/envsubst $FILE || exit 1
-          done
+          envsubst < ./helm/values.yaml > ./helm/processed-values.yaml
 
-      - name: Deploy to Kubernetes
-        uses: Azure/k8s-deploy@v5
-        with:
-          namespace: ${{ steps.config.outputs.namespace }}
-          manifests: |
-            k8s/
+      - name: Deploy Helm Chart
+        run: |
+          helm upgrade --install  \
+            ${{ env.APP_NAME }}-${{ matrix.environment }}  \
+            ./helm/chart \
+            -f ./helm/processed-values.yaml \
+            --namespace ${{ steps.config.outputs.namespace }} \
+            --create-namespace \
+            --wait
