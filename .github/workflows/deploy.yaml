@@ -141,7 +141,7 @@ jobs:
           POSTGRES_USERNAME: ${{ secrets.POSTGRES_USERNAME }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         run: |
-          envsubst < ./helm/values.yaml > ./helm/processed-values.yaml
+          envsubst < ./k8s/values.yaml > ./k8s/processed-values.yaml
 
       - name: Deploy Helm Chart
         run: |
