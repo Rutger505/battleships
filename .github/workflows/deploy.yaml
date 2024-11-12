@@ -135,6 +135,7 @@ jobs:
       - name: Process values file with envsubst
         env:
           DOCKER_TAG: ${{ needs.build-docker-image.outputs.tag }}
+          INGRESS_HOST: ${{ steps.config.outputs.ingress_host }}
           POSTGRES_ENV: ${{ steps.config.outputs.postgres_env }}
           POSTGRES_USERNAME: ${{ secrets.POSTGRES_USERNAME }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}

@@ -7,7 +7,7 @@ app:
   port: 3000
   
 ingress:
-  host: battleships.rutgerpronk.com
+  host: "${INGRESS_HOST}"
 
 certificate:
   clusterIssuerName: letsencrypt-${LETSENCRYPT_ENV}
