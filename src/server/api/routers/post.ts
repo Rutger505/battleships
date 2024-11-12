@@ -6,6 +6,8 @@ import {
   publicProcedure,
 } from "@/server/api/trpc";
 import { posts } from "@/server/db/schema";
+import { env } from "@/env";
+import { db } from "@/server/db";
 
 export const postRouter = createTRPCRouter({
   hello: publicProcedure
@@ -35,5 +37,9 @@ export const postRouter = createTRPCRouter({
 
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
+  }),
+
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    return ctx.db.query.posts.findMany();
   }),
 });

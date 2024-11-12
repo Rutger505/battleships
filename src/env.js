@@ -9,7 +9,11 @@ export const env = createEnv({
   server: {
     AUTH_URL: z.string().url(),
     AUTH_SECRET: z.string(),
-    DATABASE_URL: z.string().url(),
+    POSTGRES_USERNAME: z.string(),
+    POSTGRES_PASSWORD: z.string(),
+    POSTGRES_HOST: z.string(),
+    POSTGRES_PORT: z.coerce.number(),
+    POSTGRES_DATABASE: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -31,7 +35,11 @@ export const env = createEnv({
   runtimeEnv: {
     AUTH_URL: process.env.AUTH_URL,
     AUTH_SECRET: process.env.AUTH_SECRET,
-    DATABASE_URL: process.env.DATABASE_URL,
+    POSTGRES_USERNAME: process.env.POSTGRES_USERNAME,
+    POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
+    POSTGRES_HOST: process.env.POSTGRES_HOST,
+    POSTGRES_PORT: process.env.POSTGRES_PORT,
+    POSTGRES_DATABASE: process.env.POSTGRES_DATABASE,
     NODE_ENV: process.env.NODE_ENV,
   },
   /**
