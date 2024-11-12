@@ -124,10 +124,11 @@ jobs:
           TAG: ${{ needs.build-docker-image.outputs.tag }}
           INGRESS_HOST: ${{ steps.config.outputs.ingress_host }}
           CLUSTER_ISSUER_NAME: ${{ steps.config.outputs.cluster_issuer_name }}
-          AUTH_URL: https://${{ steps.config.outputs.ingress_host }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_NAMESPACE: ${{ steps.config.outputs.postgres_namespace }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          AUTH_URL: https://${{ steps.config.outputs.ingress_host }}
         run: |
           FILES=$(ls k8s/*.yaml | tr '\n' ' ')
           
