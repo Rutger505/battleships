@@ -124,7 +124,7 @@ jobs:
           TAG: ${{ needs.build-docker-image.outputs.tag }}
           INGRESS_HOST: ${{ steps.config.outputs.ingress_host }}
           CLUSTER_ISSUER_NAME: ${{ steps.config.outputs.cluster_issuer_name }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_USERNAME: ${{ secrets.POSTGRES_USERNAME }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_NAMESPACE: ${{ steps.config.outputs.postgres_namespace }}
           AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
