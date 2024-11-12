@@ -81,7 +81,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /var/cache/apt/archives
-          key: ${{runner.os}}-apt-gettext-${{ hashFiles('**/workflows/deploy.yml') }}
+          key: ${{runner.os}}-apt-gettext-${{ hashFiles('.github/workflows/deploy.yml') }}
 
       - name: Install envsubst
         if: steps.cache-apt.outputs.cache-hit != 'true'
