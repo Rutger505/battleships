@@ -51,7 +51,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: front-end
+          context: .
           push: true
           tags: ${{ env.DOCKER_IMAGE }}:${{ steps.config.outputs.tag }}
           cache-from: type=registry,ref=${{ env.DOCKER_IMAGE }}:cache
@@ -118,12 +118,13 @@ jobs:
 
       - name: Insert environment variables into Kubernetes files
         env:
-          # TODO check if setting DOCKER_IMAGE is necessary
           NAMESPACE: ${{ steps.config.outputs.namespace }}
-          TAG: ${{ needs.build-front-end-docker-image.outputs.tag }}
+          APP_NAME: ${{ env.APP_NAME }}
+          DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          TAG: ${{ needs.build-docker-image.outputs.tag }}
           INGRESS_HOST: ${{ steps.config.outputs.ingress_host }}
           CLUSTER_ISSUER_NAME: ${{ steps.config.outputs.cluster_issuer_name }}
-          BASE_URL: https://${{ steps.config.outputs.ingress_host }}
+          AUTH_URL: https://${{ steps.config.outputs.ingress_host }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_NAMESPACE: ${{ steps.config.outputs.postgres_namespace }}
@@ -140,6 +141,5 @@ jobs:
         uses: Azure/k8s-deploy@v5
         with:
           namespace: ${{ steps.config.outputs.namespace }}
-          # TODO check if the 0-namespace.yaml gets applied first
           manifests: |
             k8s/

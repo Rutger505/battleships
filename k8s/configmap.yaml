@@ -5,6 +5,6 @@ metadata:
   namespace: ${NAMESPACE}
 data:
   AUTH_URL: "${AUTH_URL}"
-  POSTGRES_DATABASE: "${POSTGRES_DATABASE}"
+  POSTGRES_DATABASE: "${APP_NAME}"
   POSTGRES_HOST: "postgres-service.${POSTGRES_NAMESPACE}.svc.cluster.local"
-  POSTGRES_PORT: "${POSTGRES_PORT}"
+  POSTGRES_PORT: "5432"
