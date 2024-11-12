@@ -1,22 +1,22 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ${APP_NAME}-ingress
-  namespace: ${NAMESPACE}
+  name: {{ .Values.app.name }}-ingress
+  namespace: {{ .Values.app.namespace }}
 spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - ${INGRESS_HOST}
-      secretName: ${APP_NAME}-tls
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Values.app.name }}-tls
   rules:
-    - host: ${INGRESS_HOST}
+    - host: {{ .Values.ingress.host }}
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: ${APP_NAME}-service
+                name: {{ .Values.app.name }}-service
                 port:
                   number: 80

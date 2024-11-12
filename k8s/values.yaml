@@ -1,0 +1,26 @@
+app:
+  name: battleships
+  namespace: battleships
+  image:
+    repository: rutger505/battleships
+    tag: "${DOCKER_TAG}"
+  port: 3000
+  
+ingress:
+  host: battleships.rutgerpronk.com
+
+certificate:
+  clusterIssuerName: letsencrypt-${LETSENCRYPT_ENV}
+  duration: 2160h # 90 days
+  renewBefore: 360h # 15 days
+
+auth:
+  url: https://battleships.rutgerpronk.com
+  secret: "${AUTH_SECRET}"
+
+postgres:
+  host: postgres-service.postgres-${POSTGRES_ENV}.svc.cluster.local
+  port: 5432
+  database: battleships
+  username: ${POSTGRES_USERNAME}
+  password: ${POSTGRES_PASSWORD}
