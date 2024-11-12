@@ -15,7 +15,7 @@ certificate:
   renewBefore: 360h # 15 days
 
 auth:
-  url: https://battleships.rutgerpronk.com
+  url: "https://${INGRESS_HOST}"
   secret: "${AUTH_SECRET}"
 
 postgres:
