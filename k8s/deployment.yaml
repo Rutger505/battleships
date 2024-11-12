@@ -28,7 +28,7 @@ spec:
 
       containers:
         - name: ${APP_NAME}
-          image: rutger505/${DOCKER_IMAGE}:${TAG}
+          image: ${DOCKER_IMAGE}:${TAG}
           ports:
             - containerPort: 3000
           envFrom:
