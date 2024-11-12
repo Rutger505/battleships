@@ -147,8 +147,8 @@ jobs:
         run: |
           helm upgrade --install  \
             ${{ env.APP_NAME }}-${{ matrix.environment }}  \
-            ./k8s/chart \
-            -f ./helm/processed-values.yaml \
+            ./k8s \
+            -f ./k8s/processed-values.yaml \
             --namespace ${{ steps.config.outputs.namespace }} \
             --create-namespace \
             --wait
