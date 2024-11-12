@@ -135,11 +135,12 @@ jobs:
       - name: Process values file with envsubst
         env:
           DOCKER_TAG: ${{ needs.build-docker-image.outputs.tag }}
-          LETSENCRYPT_ENV: ${{ steps.config.outputs.letsencrypt_env }}
           POSTGRES_ENV: ${{ steps.config.outputs.postgres_env }}
-          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
           POSTGRES_USERNAME: ${{ secrets.POSTGRES_USERNAME }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          LETSENCRYPT_ENV: ${{ steps.config.outputs.letsencrypt_env }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          APP_ENV: ${{ matrix.environment }}
         run: |
           envsubst < ./k8s/values.yaml > ./k8s/processed-values.yaml
 

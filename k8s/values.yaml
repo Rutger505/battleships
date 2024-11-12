@@ -1,6 +1,6 @@
 app:
   name: battleships
-  namespace: battleships
+  namespace: battleships-${APP_ENV}
   image:
     repository: rutger505/battleships
     tag: "${DOCKER_TAG}"
