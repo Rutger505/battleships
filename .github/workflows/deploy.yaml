@@ -76,8 +76,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Cache APT packages
+        id: cache-apt
+        uses: actions/cache@v3
+        with:
+          path: /var/cache/apt/archives
+          key: ${{runner.os}}-apt-gettext-${{ hashFiles('**/workflows/deploy.yml') }}
+
       - name: Install envsubst
-        run: sudo apt-get update && sudo apt-get install -y gettext-base
+        if: steps.cache-apt.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext-base
 
       - name: Generate deployment config
         id: config
