@@ -81,10 +81,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /var/cache/apt/archives
-          key: ${{runner.os}}-apt-gettext-${{ hashFiles('.github/workflows/deploy.yml') }}
+          key: ${{runner.os}}-apt-get
 
       - name: Install envsubst
-        if: steps.cache-apt.outputs.cache-hit != 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y gettext-base
