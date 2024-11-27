@@ -4,20 +4,21 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev:website": "next dev",
+    "dev:websockets": "bun run --watch ./src/server/socket/websockets.ts",
     "build": "next build",
+    "start:website": "next start",
+    "start:websockets": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "check": "next lint && tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "dev": "tsx server.ts",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
-    "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
-    "preview": "next build && next start",
-    "start": "NODE_ENV=production tsx server.ts",
-    "typecheck": "tsc --noEmit"
+    "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.2",

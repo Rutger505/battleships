@@ -7,6 +7,7 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
+    BASE_URL: z.string().url(),
     AUTH_URL: z.string().url(),
     AUTH_SECRET: z.string(),
     POSTGRES_USERNAME: z.string(),
@@ -33,6 +34,7 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    BASE_URL: process.env.BASE_URL,
     AUTH_URL: process.env.AUTH_URL,
     AUTH_SECRET: process.env.AUTH_SECRET,
     POSTGRES_USERNAME: process.env.POSTGRES_USERNAME,
