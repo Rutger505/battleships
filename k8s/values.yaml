@@ -1,3 +1,4 @@
+# TODO: update helm to deploy websocket and website separately
 app:
   name: battleships
   namespace: battleships-${APP_ENV}
