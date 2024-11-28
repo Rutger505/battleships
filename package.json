@@ -8,7 +8,7 @@
     "dev:websockets": "bun run --watch ./src/server/socket/websockets.ts",
     "build": "next build",
     "start:website": "next start",
-    "start:websockets": "next start",
+    "start:websockets": "bun run ./src/server/socket/websockets.ts",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "check": "next lint && tsc --noEmit",
