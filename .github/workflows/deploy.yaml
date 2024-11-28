@@ -8,10 +8,6 @@ on:
     branches:
       - '*'
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 env:
   DOCKER_IMAGE_PREFIX: rutger505/battleships
   APP_NAME: battleships
