@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.app.name }}-deployment
+  name: {{ .Values.app.name }}-website-deployment
   namespace: {{ .Values.app.namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.app.name }}-deployment
+      app: {{ .Values.app.name }}-website-deployment
   template:
     metadata:
       labels:
-        app: {{ .Values.app.name }}-deployment
+        app: {{ .Values.app.name }}-website-deployment
     spec:
       automountServiceAccountToken: false
       containers:
         - name: {{ .Values.app.name }}
-          image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+          image: {{ .Values.app.image.repository }}"-website:"{{ .Values.app.image.tag }}
           ports:
             - containerPort: {{ .Values.app.port }}
           envFrom:

@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.app.name }}-service
+  name: {{ .Values.app.name }}-website-service
   namespace: {{ .Values.app.namespace }}
 spec:
   selector:
-    app: {{ .Values.app.name }}-deployment
+    app: {{ .Values.app.name }}-website-deployment
   ports:
     - protocol: TCP
       port: 80
