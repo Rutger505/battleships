@@ -12,8 +12,6 @@ COPY ./src/env.js ./src/env.js
 
 FROM oven/bun:1-alpine AS development
 
-WORKDIR /app
-
 COPY --from=base /app/node_modules ./node_modules
 COPY --from=base /app/src ./src
 COPY --from=base /app/package.json /app/tsconfig.json ./
@@ -28,7 +26,9 @@ FROM oven/bun:1-alpine AS production
 ENV NODE_ENV production
 
 COPY --from=base /app/node_modules ./node_modules
-COPY --from=base /app/ ./app
+COPY --from=base /app/src ./src
+COPY --from=base /app/package.json /app/tsconfig.json ./
+
 
 EXPOSE 3000
 
