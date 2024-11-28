@@ -16,7 +16,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: {{ .Values.app.name }}
-          image: {{ .Values.app.image.repository }}"-websocket:"{{ .Values.app.image.tag }}
+          image: "{{ .Values.app.image.repository }}-websocket:{{ .Values.app.image.tag }}"
           ports:
             - containerPort: {{ .Values.app.port }}
           envFrom:
