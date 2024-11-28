@@ -1,16 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { io, type Socket } from "socket.io-client";
+import { connect, type Socket } from "socket.io-client";
 
-let socket: Socket | null = null;
+let socket: typeof Socket | null = null;
 
 export default function SocketPage() {
   const [message, setMessage] = useState<string>("");
   const [receivedMessages, setReceivedMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    socket = io({
+    socket = connect({
       path: "/api/socket",
     });
 

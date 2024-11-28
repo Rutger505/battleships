@@ -40,7 +40,7 @@ node_modules
 .vars
 
 # Docker
-website.Dockerfile
+Dockerfile
 *.Dockerfile
 .dockerignore
 docker-compose*
