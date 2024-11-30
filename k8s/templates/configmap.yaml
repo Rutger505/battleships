@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.app.name }}-config
   namespace: {{ .Values.app.namespace }}
 data:
-  AUTH_URL: {{ .Values.auth.url | quote }}
+  BASE_URL: {{ .Values.auth.url | quote }}
   AUTH_URL: {{ .Values.auth.url | quote }}
   POSTGRES_DATABASE: {{ .Values.postgres.database | quote }}
   POSTGRES_HOST: {{ .Values.postgres.host | quote }}
