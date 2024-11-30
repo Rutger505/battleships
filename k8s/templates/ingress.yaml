@@ -17,6 +17,14 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ .Values.app.name }}-service
+                name: {{ .Values.app.name }}-website-service
+                port:
+                  number: 80
+
+          - path: /api/socket
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.app.name }}-websockets-service
                 port:
                   number: 80
