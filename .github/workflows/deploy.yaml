@@ -54,8 +54,8 @@ jobs:
           file: website.Dockerfile
           push: true
           tags: ${{ steps.config.outputs.image }}:${{ steps.config.outputs.tag }}
-          cache-from: type=registry,ref=${{ env.DOCKER_IMAGE_PREFIX }}:cache
-          cache-to: type=registry,ref=${{ env.DOCKER_IMAGE_PREFIX }}:cache,mode=max
+          cache-from: type=registry,ref=${{ steps.config.outputs.image }}:cache
+          cache-to: type=registry,ref=${{ steps.config.outputs.image }}:cache,mode=max
 
   build-websocket-docker-image:
     name: Build Docker image
@@ -96,8 +96,8 @@ jobs:
           file: websockets.Dockerfile
           push: true
           tags: ${{ steps.config.outputs.image }}:${{ steps.config.outputs.tag }}
-          cache-from: type=registry,ref=${{ env.DOCKER_IMAGE_PREFIX }}:cache
-          cache-to: type=registry,ref=${{ env.DOCKER_IMAGE_PREFIX }}:cache,mode=max
+          cache-from: type=registry,ref=${{ steps.config.outputs.image }}:cache
+          cache-to: type=registry,ref=${{ steps.config.outputs.image }}:cache,mode=max
 
   deploy-to-kubernetes:
     name: Deploy to Kubernetes
