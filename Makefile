@@ -2,10 +2,10 @@ include .env
 
 all: up
 
-up:
+up: ssl
 	docker compose up --watch --build --remove-orphans --force-recreate
 
-up-%:
+up-%: ssl
 	docker compose up --build --detach --remove-orphans --force-recreate $*
 
 restart: up # start already rebuilds and recreates the containers
@@ -21,3 +21,11 @@ down-%:
 
 shell-%:
 	docker compose exec $* bash
+
+ssl: ./ssl/localhost.pem
+
+./ssl/%.pem:
+	-mkdir ssl
+	mkcert -install
+	cd ssl && mkcert $*
+	echo SSL certificates generated

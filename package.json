@@ -4,20 +4,21 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev:website": "next dev",
+    "dev:websockets": "bun run --watch ./src/server/socket/websockets.ts",
     "build": "next build",
+    "start:website": "next start",
+    "start:websockets": "bun run ./src/server/socket/websockets.ts",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "check": "next lint && tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "dev": "next dev --turbo",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
-    "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix",
-    "preview": "next build && next start",
-    "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.2",
@@ -34,14 +35,19 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "server-only": "^0.0.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "superjson": "^2.2.1",
+    "tsx": "^4.19.2",
     "zod": "^3.23.3"
   },
   "devDependencies": {
     "@types/eslint": "^8.56.10",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.17.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/socket.io": "^3.0.1",
+    "@types/socket.io-client": "^1.4.36",
     "@typescript-eslint/eslint-plugin": "^8.1.0",
     "@typescript-eslint/parser": "^8.1.0",
     "drizzle-kit": "^0.24.0",
@@ -52,7 +58,8 @@
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5.5.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   },
   "ct3aMetadata": {
     "initVersion": "7.38.1"

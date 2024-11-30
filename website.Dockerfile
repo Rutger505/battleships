@@ -13,7 +13,7 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev:website"]
 
 
 FROM base AS deps
@@ -33,7 +33,8 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN SKIP_ENV_VALIDATION=1 npm run build
+ENV SKIP_ENV_VALIDATION 1
+RUN npm run build
 
 
 FROM base AS production

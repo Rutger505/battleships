@@ -1,10 +1,20 @@
 services:
-  battleships:
+  proxy:
+    image: traefik:v3
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./ssl/:/ssl/"
+      - "./traefik.yaml:/etc/traefik/traefik.yaml"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+
+  website:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: website.Dockerfile
       target: development
-    container_name: Battleships
     env_file: .env
     develop:
       watch:
@@ -15,10 +25,31 @@ services:
             - node_modules/
         - action: rebuild
           path: package.json
-    ports:
-      - "80:3000"
+    labels:
+      traefik.http.routers.website.rule: Host(`localhost`)
+      traefik.http.routers.website.tls: true
     depends_on:
       - postgres
+
+  websockets:
+    build:
+      context: .
+      dockerfile: websockets.Dockerfile
+      target: development
+    env_file: .env
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app/
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
+    labels:
+        traefik.http.routers.websockets.rule: Host(`localhost`) && PathPrefix(`/api/socket`)
+        traefik.http.routers.websockets.tls: true
+
 
   postgres:
     image: postgres:17
